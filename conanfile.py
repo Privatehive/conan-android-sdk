@@ -20,8 +20,7 @@ class AndroidSDKConan(ConanFile):
     build_requires = "java_installer/8.0.144@tereius/stable"
     options = {"bildToolsRevision": "ANY"}
     default_options = "bildToolsRevision=28.0.2"
-    settings = {"os_build": ["Windows", "Linux", "Macos"],
-                "os": ["Android"]}
+    settings = {"os": ["Android"], "os_build": ["Windows", "Linux", "Macos"], "arch_build": ["x86", "x86_64"]}
 
     min_api_level = 7
     max_api_level = 28
@@ -60,6 +59,9 @@ class AndroidSDKConan(ConanFile):
             copytree(self.source_folder + "/platforms", self.package_folder + "/platforms")
             copytree(self.source_folder + "/tools", self.package_folder + "/tools")
             self.sdk_copied = True
+
+    def package_id(self):
+        self.info.include_build_settings()
 
     def package_info(self):
         sdk_root = self.package_folder
