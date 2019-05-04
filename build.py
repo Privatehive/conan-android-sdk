@@ -47,7 +47,3 @@ if __name__ == "__main__":
     builder = ConanMultiPackager()
     builder.add()
     builder.run(os.path.abspath("./ci-profile"))
-
-    version = check_output("conan inspect . -a version").decode("ascii").rstrip()
-    name = check_output("conan inspect . -a name").decode("ascii").rstrip()
-    check_output("conan install %s/%s@%s/%s -pr %s" % (name[6:], version[9:], user_name, user_channel, "ci-profile"))
