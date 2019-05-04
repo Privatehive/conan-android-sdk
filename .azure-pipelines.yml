@@ -36,7 +36,7 @@ jobs:
       CONAN_REMOTES: "https://api.bintray.com/conan/tereius/public-conan",
       CONAN_UPLOAD: "https://api.bintray.com/conan/tereius/public-conan",
       CONAN_LOGIN_USERNAME: "tereius",
-      CONAN_PASSWORD: "$(secret)"
+      CONAN_PASSWORD: "$(secret)",
       CONAN_BASE_PROFILE_OS: "Android",
       CONAN_BASE_PROFILE_OSBUILD: "$(conanBuildOS)",
       CONAN_BASE_PROFILE_OS_API: "21"
