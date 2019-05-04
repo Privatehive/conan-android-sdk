@@ -6,6 +6,7 @@ from conans.errors import ConanException
 from shutil import copytree
 from subprocess import Popen, PIPE, STDOUT, TimeoutExpired
 import time
+import os
 
 
 class AndroidSDKConan(ConanFile):
@@ -25,6 +26,10 @@ class AndroidSDKConan(ConanFile):
     min_api_level = 7
     max_api_level = 28
 
+    @property
+    def sdkmanager_bin(self):
+        return os.path.join(self.source_folder, "tools", "bin", "sdkmanager")
+
     def configure(self):
         if int(str(self.settings.os.api_level)) < self.min_api_level or int(str(self.settings.os.api_level)) > self.max_api_level:
             raise ConanException("Unsupported API level: " + str(self.settings.os.api_level) + " (supported [%i ... %i])" % (self.min_api_level, self.max_api_level))
@@ -43,11 +48,11 @@ class AndroidSDKConan(ConanFile):
             raise ConanException("Unsupported build os: " + self.settings.os_build)
 
     def build(self):
-        p = Popen(["%s/tools/bin/sdkmanager" % (self.source_folder), '--licenses'], universal_newlines=True ,shell=True if self.settings.os_build == "Windows" else False, stdout=PIPE, stdin=PIPE, stderr=STDOUT)
+        p = Popen([self.sdkmanager_bin, '--licenses'], universal_newlines=True ,shell=True if self.settings.os_build == "Windows" else False, stdout=PIPE, stdin=PIPE, stderr=STDOUT)
         p.communicate(input='y\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\n')
-        self.run('"%s/tools/bin/sdkmanager" --install "platforms;android-%s"' % (self.source_folder, str(self.settings.os.api_level)))
-        self.run('"%s/tools/bin/sdkmanager" --install "build-tools;%s"' % (self.source_folder, str(self.options.bildToolsRevision)))
-        self.run('"%s/tools/bin/sdkmanager" --install "platform-tools"' % (self.source_folder))
+        self.run('"%s" --install "platforms;android-%s"' % (self.sdkmanager_bin, str(self.settings.os.api_level)))
+        self.run('"%s" --install "build-tools;%s"' % (self.sdkmanager_bin, str(self.options.bildToolsRevision)))
+        self.run('"%s" --install "platform-tools"' % (self.sdkmanager_bin))
 
     sdk_copied = False
 
