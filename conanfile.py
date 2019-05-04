@@ -4,7 +4,7 @@
 from conans import ConanFile, tools
 from conans.errors import ConanException
 from shutil import copytree
-from subprocess import Popen, PIPE, STDOUT
+from subprocess import Popen, PIPE, STDOUT, TimeoutExpired
 import time
 
 
@@ -36,19 +36,19 @@ class AndroidSDKConan(ConanFile):
             tools.get(source_url, sha256="7e81d69c303e47a4f0e748a6352d85cd0c8fd90a5a95ae4e076b5e5f960d3c7a")
         elif self.settings.os_build == 'Linux':
             source_url = "https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip"
-            tools.get(source_url, sha256="92ffee5a1d98d856634e8b71132e8a95d96c83a63fde1099be3d86df3106def9")
+            tools.get(source_url, sha256="92ffee5a1d98d856634e8b71132e8a95d96c83a63fde1099be3d86df3106def9", keep_permissions=True)
         elif self.settings.os_build == 'Macos':
             source_url = "https://dl.google.com/android/repository/sdk-tools-darwin-4333796.zip"
-            tools.get(source_url, sha256="ecb29358bc0f13d7c2fa0f9290135a5b608e38434aad9bf7067d0252c160853e")
+            tools.get(source_url, sha256="ecb29358bc0f13d7c2fa0f9290135a5b608e38434aad9bf7067d0252c160853e", keep_permissions=True)
         else:
             raise ConanException("Unsupported build os: " + self.settings.os_build)
 
     def build(self):
-        p = Popen(["%s/tools/bin/sdkmanager" % (self.source_folder), '--licenses'], universal_newlines=True ,shell=True, stdout=PIPE, stdin=PIPE, stderr=STDOUT)
+        p = Popen(["%s/tools/bin/sdkmanager" % (self.source_folder), '--licenses'], universal_newlines=True ,shell=False, stdout=PIPE, stdin=PIPE, stderr=STDOUT)
         p.communicate(input='y\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\n')
-        self.run('"%s/tools/bin/sdkmanager" --install platforms;android-%s' % (self.source_folder, str(self.settings.os.api_level)))
-        self.run('"%s/tools/bin/sdkmanager" --install build-tools;%s' % (self.source_folder, str(self.options.bildToolsRevision)))
-        self.run('"%s/tools/bin/sdkmanager" --install platform-tools' % (self.source_folder))
+        self.run('"%s/tools/bin/sdkmanager" --install "platforms;android-%s"' % (self.source_folder, str(self.settings.os.api_level)))
+        self.run('"%s/tools/bin/sdkmanager" --install "build-tools;%s"' % (self.source_folder, str(self.options.bildToolsRevision)))
+        self.run('"%s/tools/bin/sdkmanager" --install "platform-tools"' % (self.source_folder))
 
     sdk_copied = False
 
