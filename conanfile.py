@@ -4,8 +4,7 @@
 from conans import ConanFile, tools
 from conans.errors import ConanException
 from shutil import copytree
-from subprocess import Popen, PIPE, STDOUT, TimeoutExpired
-import time
+from subprocess import Popen, PIPE, STDOUT
 import os
 
 
@@ -48,7 +47,7 @@ class AndroidSDKConan(ConanFile):
             raise ConanException("Unsupported build os: " + self.settings.os_build)
 
     def build(self):
-        p = Popen([self.sdkmanager_bin, '--licenses'], universal_newlines=True ,shell=True if self.settings.os_build == "Windows" else False, stdout=PIPE, stdin=PIPE, stderr=STDOUT)
+        p = Popen([self.sdkmanager_bin, '--licenses'], universal_newlines=True, shell=True if self.settings.os_build == "Windows" else False, stdout=PIPE, stdin=PIPE, stderr=STDOUT)
         p.communicate(input='y\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\n')
         self.run('%s --install "platforms;android-%s"' % (self.sdkmanager_bin, str(self.settings.os.api_level)))
         self.run('%s --install "build-tools;%s"' % (self.sdkmanager_bin, str(self.options.bildToolsRevision)))
@@ -59,10 +58,10 @@ class AndroidSDKConan(ConanFile):
     def package(self):
         # Called twice because of 'no_copy_source'. First from source-, then from build-dir
         if not self.sdk_copied:
-            copytree(self.source_folder + "/build-tools", self.package_folder + "/build-tools")
-            copytree(self.source_folder + "/licenses", self.package_folder + "/licenses")
-            copytree(self.source_folder + "/platforms", self.package_folder + "/platforms")
-            copytree(self.source_folder + "/tools", self.package_folder + "/tools")
+            copytree(os.path.join(self.source_folder, "build-tools"), os.path.join(self.package_folder, "build-tools"))
+            copytree(os.path.join(self.source_folder, "licenses"), os.path.join(self.package_folder, "licenses"))
+            copytree(os.path.join(self.source_folder, "platforms"), os.path.join(self.package_folder, "platforms"))
+            copytree(os.path.join(self.source_folder, "tools"), os.path.join(self.package_folder, "tools"))
             self.sdk_copied = True
 
     def package_id(self):
