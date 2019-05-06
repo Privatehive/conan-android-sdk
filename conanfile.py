@@ -5,6 +5,7 @@ from conans import ConanFile, tools
 from conans.errors import ConanException
 from shutil import copytree
 from subprocess import Popen, PIPE, STDOUT
+from os import path
 import time
 
 
@@ -44,21 +45,22 @@ class AndroidSDKConan(ConanFile):
             raise ConanException("Unsupported build os: " + self.settings.os_build)
 
     def build(self):
-        p = Popen(["%s/tools/bin/sdkmanager" % (self.source_folder), '--licenses'], universal_newlines=True ,shell=True, stdout=PIPE, stdin=PIPE, stderr=STDOUT)
+        sdk_manager_path = path.join(self.source_folder, "tools", "bin", "sdkmanager")
+        p = Popen(["%s" % sdk_manager_path, '--licenses'], universal_newlines=True, shell=True, stdout=PIPE, stdin=PIPE, stderr=STDOUT)
         p.communicate(input='y\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\n')
-        self.run('"%s/tools/bin/sdkmanager" --install platforms;android-%s' % (self.source_folder, str(self.settings.os.api_level)))
-        self.run('"%s/tools/bin/sdkmanager" --install build-tools;%s' % (self.source_folder, str(self.options.bildToolsRevision)))
-        self.run('"%s/tools/bin/sdkmanager" --install platform-tools' % (self.source_folder))
+        self.run('"%s" --install platforms;android-%s' % (sdk_manager_path, str(self.settings.os.api_level)))
+        self.run('"%s" --install build-tools;%s' % (sdk_manager_path, str(self.options.bildToolsRevision)))
+        self.run('"%s" --install platform-tools' % sdk_manager_path)
 
     sdk_copied = False
 
     def package(self):
         # Called twice because of 'no_copy_source'. First from source-, then from build-dir
         if not self.sdk_copied:
-            copytree(self.source_folder + "/build-tools", self.package_folder + "/build-tools")
-            copytree(self.source_folder + "/licenses", self.package_folder + "/licenses")
-            copytree(self.source_folder + "/platforms", self.package_folder + "/platforms")
-            copytree(self.source_folder + "/tools", self.package_folder + "/tools")
+            copytree(path.join(self.source_folder, "build-tools"), path.join(self.package_folder, "build-tools"))
+            copytree(path.join(self.source_folder, "licenses"), path.join(self.package_folder, "licenses"))
+            copytree(path.join(self.source_folder, "platforms"), path.join(self.package_folder, "platforms"))
+            copytree(path.join(self.source_folder, "tools"), path.join(self.package_folder, "tools"))
             self.sdk_copied = True
 
     def package_info(self):
