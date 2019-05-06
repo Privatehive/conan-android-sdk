@@ -47,7 +47,7 @@ class AndroidSDKConan(ConanFile):
             raise ConanException("Unsupported build os: " + self.settings.os_build)
 
     def build(self):
-        p = Popen([self.sdkmanager_bin, '--licenses'], universal_newlines=True ,shell=True if self.settings.os_build == "Windows" else False, stdout=PIPE, stdin=PIPE, stderr=STDOUT)
+        p = Popen([self.sdkmanager_bin, '--licenses'], universal_newlines=True, shell=True if self.settings.os_build == "Windows" else False, stdout=PIPE, stdin=PIPE, stderr=STDOUT)
         p.communicate(input='y\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\n')
         self.run('%s --install "platforms;android-%s"' % (self.sdkmanager_bin, str(self.settings.os.api_level)))
         self.run('%s --install "build-tools;%s"' % (self.sdkmanager_bin, str(self.options.bildToolsRevision)))
