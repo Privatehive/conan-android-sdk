@@ -4,8 +4,7 @@
 from conans import ConanFile, tools
 from conans.errors import ConanException
 from shutil import copytree
-from subprocess import Popen, PIPE, STDOUT, TimeoutExpired
-import time
+from subprocess import Popen, PIPE, STDOUT
 import os
 
 
