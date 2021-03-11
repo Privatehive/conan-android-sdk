@@ -84,7 +84,7 @@ class AndroidSDKConan(ConanFile):
             #source_url = "https://dl.google.com/android/repository/commandlinetools-linux-6858069_latest.zip"
             tools.get(source_url, keep_permissions=True)
         elif self.get_setting("os_build") == 'Macos':
-            source_url = "https://dl.google.com/android/repository/sdk-tools-mac-4333796.zip"
+            source_url = "https://dl.google.com/android/repository/sdk-tools-darwin-4333796.zip"
             #source_url = "https://dl.google.com/android/repository/commandlinetools-mac-6858069_latest.zip"
             tools.get(source_url, keep_permissions=True)
         else:
