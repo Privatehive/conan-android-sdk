@@ -66,6 +66,9 @@ class AndroidSDKConan(ConanFile):
         return os.path.join(self.source_folder, "tools", "bin", "sdkmanager")
 
     def configure(self):
+        if not self.isSingleProfile():
+            del self.settings.os_build
+            del self.settings.arch_build
         if int(str(self.options.platformVersion)) < self.min_api_level or int(str(self.options.platformVersion)) > self.max_api_level:
             raise ConanException("Unsupported Android platform version: " + str(self.options.platformVersion) + " (supported [%i ... %i])" % (self.min_api_level, self.max_api_level))
         if self.get_setting("os_build") not in ["Windows", "Macos", "Linux"]:
@@ -109,8 +112,8 @@ class AndroidSDKConan(ConanFile):
             self.sdk_copied = True
 
     def package_id(self):
-        if self.isSingleProfile():
-            self.info.include_build_settings()
+        self.info.settings.os = self.get_setting("os_build")
+        self.info.settings.arch = self.get_setting("arch_build")
 
     def package_info(self):
         sdk_root = self.package_folder
