@@ -10,7 +10,7 @@ import os
 
 class AndroidSDKConan(ConanFile):
     min_api_level = 7
-    max_api_level = 30
+    max_api_level = 32
     name = "android-sdk"
     version = "latest"
     description = "Android commandline tools to obtain the Android SDK. It includes the complete set of development and debugging tools for Android"
