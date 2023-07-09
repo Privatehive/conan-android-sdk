@@ -1,0 +1,14 @@
+sources:
+  "latest":
+    Windows:
+      url: "https://dl.google.com/android/repository/commandlinetools-win-9477386_latest.zip"
+      sha256: "696431978daadd33a28841320659835ba8db8080a535b8f35e9e60701ab8b491"
+      keep_permissions: False
+    Linux:
+      url: "https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip"
+      sha256: "bd1aa17c7ef10066949c88dc6c9c8d536be27f992a1f3b5a584f9bd2ba5646a0"
+      keep_permissions: True
+    Macos:
+      url: "https://dl.google.com/android/repository/commandlinetools-mac-9477386_latest.zip"
+      sha256: "2072ffce4f54cc0e6d2074d2f381e7e579b7d63e915c220b96a7db95b2900ee"
+      keep_permissions: True
