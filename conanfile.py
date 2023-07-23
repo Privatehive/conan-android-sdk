@@ -18,7 +18,7 @@ required_conan_version = ">=2.0"
 
 class AndroidSDKConan(ConanFile):
 
-    min_api_level = 8
+    min_api_level = 7
     max_api_level = 33
 
     jsonInfo = json.load(open("info.json", 'r'))
@@ -43,11 +43,15 @@ class AndroidSDKConan(ConanFile):
     # ---Binary model---
     settings = "os", "arch"
     options = {"buildToolsRevision": ["ANY"], "platformVersion": list(range(min_api_level, max_api_level + 1))}
-    default_options = {"buildToolsRevision": "33.0.0", "platformVersion": 33}
+    default_options = {"buildToolsRevision": "33.0.2", "platformVersion": 33}
     # ---Build---
     generators = []
     # ---Folders---
     no_copy_source = True
+
+    @property
+    def toolchain_path(self):
+        return os.path.join(self.package_folder, "android_sdk_path.cmake")
 
     def validate(self):
         if self.settings.arch != "x86_64":
@@ -77,8 +81,12 @@ class AndroidSDKConan(ConanFile):
         copy(self, pattern="*", src=os.path.join(self.source_folder, "platforms"), dst=os.path.join(self.package_folder, "platforms"))
         copy(self, pattern="*", src=os.path.join(self.source_folder, "platform-tools"), dst=os.path.join(self.package_folder, "platform-tools"))
         copy(self, pattern="*", src=os.path.join(self.source_folder, "platforms"), dst=os.path.join(self.package_folder, "platforms"))
+        with open(os.path.join(self.package_folder, self.toolchain_path), "w") as f:
+            f.write("set(ANDROID_SDK_ROOT \"%s\" CACHE PATH \"Set ANDROID_SDK_ROOT\")" % self.package_folder)
 
     def package_info(self):
         self.output.info('Creating SDK_ROOT, ANDROID_SDK_ROOT environment variable: %s' % self.package_folder)
         self.buildenv_info.define_path("SDK_ROOT", self.package_folder)
         self.buildenv_info.define_path("ANDROID_SDK_ROOT", self.package_folder)
+        self.output.info('Injecting cmaketoolchain:user_toolchain: %s' % self.toolchain_path)
+        self.conf_info.append("tools.cmake.cmaketoolchain:user_toolchain", self.toolchain_path)

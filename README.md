@@ -1,8 +1,14 @@
 # conan-android-sdk
-| OS | Status |
-|---|---|
-| Linux | [![Build Status](https://dev.azure.com/bjoernstresing/bjoernstresing/_apis/build/status/Tereius.conan-android-sdk?repoName=Tereius%2Fconan-android-sdk&branchName=master&jobName=Build&configuration=Build%20Linux)](https://dev.azure.com/bjoernstresing/bjoernstresing/_build/latest?definitionId=2&repoName=Tereius%2Fconan-android-sdk&branchName=master) |
-| Windows | [![Build Status](https://dev.azure.com/bjoernstresing/bjoernstresing/_apis/build/status/Tereius.conan-android-sdk?repoName=Tereius%2Fconan-android-sdk&branchName=master&jobName=Build&configuration=Build%20Windows)](https://dev.azure.com/bjoernstresing/bjoernstresing/_build/latest?definitionId=2&repoName=Tereius%2Fconan-android-sdk&branchName=master) |
-| Macos | [![Build Status](https://dev.azure.com/bjoernstresing/bjoernstresing/_apis/build/status/Tereius.conan-android-sdk?repoName=Tereius%2Fconan-android-sdk&branchName=master&jobName=Build&configuration=Build%20Macos)](https://dev.azure.com/bjoernstresing/bjoernstresing/_build/latest?definitionId=2&repoName=Tereius%2Fconan-android-sdk&branchName=master) |
 
 ### A conan package that provides the android sdk
+
+The following packages will be installed:
+
+- platforms;android-${platformVersion}
+- build-tools;${buildToolsRevision}
+- platform-tools
+
+| option             | values | default  |
+| ------------------ | ------ | -------- |
+| buildToolsRevision | "ANY"  | "33.0.2" |
+| platformVersion    | 7..34  | 33       |
