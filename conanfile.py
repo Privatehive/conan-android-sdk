@@ -42,8 +42,8 @@ class AndroidSDKConan(ConanFile):
     exports_sources = []
     # ---Binary model---
     settings = "os", "arch"
-    options = {"buildToolsRevision": ["ANY"], "platformVersion": list(range(min_api_level, max_api_level + 1))}
-    default_options = {"buildToolsRevision": "33.0.2", "platformVersion": 33}
+    options = {"ndkVersion": ["ANY"], "buildToolsRevision": ["ANY"], "platformVersion": list(range(min_api_level, max_api_level + 1))}
+    default_options = {"ndkVersion": "25.1.8937393", "buildToolsRevision": "33.0.2", "platformVersion": 33}
     # ---Build---
     generators = []
     # ---Folders---
@@ -74,6 +74,7 @@ class AndroidSDKConan(ConanFile):
         self.run('%s --sdk_root=%s --install "platforms;android-%s"' % (sdkmanager_bin, self.source_folder, str(self.options.platformVersion)))
         self.run('%s --sdk_root=%s --install "build-tools;%s"' % (sdkmanager_bin, self.source_folder, str(self.options.buildToolsRevision)))
         self.run('%s --sdk_root=%s --install "platform-tools"' % (sdkmanager_bin, self.source_folder))
+        self.run('%s --sdk_root=%s --install "ndk;%s"' % (sdkmanager_bin, self.source_folder, self.options.ndkVersion))
 
     def package(self):
         copy(self, pattern="*", src=os.path.join(self.source_folder, "build-tools"), dst=os.path.join(self.package_folder, "build-tools"))
@@ -81,6 +82,7 @@ class AndroidSDKConan(ConanFile):
         copy(self, pattern="*", src=os.path.join(self.source_folder, "platforms"), dst=os.path.join(self.package_folder, "platforms"))
         copy(self, pattern="*", src=os.path.join(self.source_folder, "platform-tools"), dst=os.path.join(self.package_folder, "platform-tools"))
         copy(self, pattern="*", src=os.path.join(self.source_folder, "platforms"), dst=os.path.join(self.package_folder, "platforms"))
+        copy(self, pattern="*", src=os.path.join(self.source_folder, "ndk"), dst=os.path.join(self.package_folder, "ndk"))
         with open(os.path.join(self.package_folder, self.toolchain_path), "w") as f:
             f.write("set(ANDROID_SDK_ROOT \"%s\" CACHE PATH \"Set ANDROID_SDK_ROOT\")" % self.package_folder)
 
