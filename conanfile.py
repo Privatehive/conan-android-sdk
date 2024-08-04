@@ -2,17 +2,11 @@
 # -*- coding: utf-8 -*-
 
 from conan import ConanFile
-from conan.tools.cmake import CMake, CMakeToolchain
-from conan.tools.files import patch, load, get, replace_in_file, copy
-from conan.tools.build import cross_building, build_jobs
-from conan.tools.env import VirtualBuildEnv, Environment
-from conan.tools.scm import Git
+from conan.tools.files import get, copy
+from conan.tools.env import VirtualBuildEnv
+from conan.errors import ConanInvalidConfiguration
 from subprocess import check_call, Popen, PIPE, STDOUT, DEVNULL
 import json, os
-import shutil
-import configparser
-import tempfile
-import requests
 
 required_conan_version = ">=2.0"
 
@@ -54,12 +48,14 @@ class AndroidSDKConan(ConanFile):
         return os.path.join(self.package_folder, "android_sdk_path.cmake")
 
     def validate(self):
-        if self.settings.arch != "x86_64":
-            raise ConanInvalidConfiguration("Unsupported Architecture. This package currently only supports x86_64.")
-        if self.settings.os not in ["Windows", "Macos", "Linux"]:
-            raise ConanInvalidConfiguration("Unsupported os. This package currently only support Linux/Macos/Windows")
+        valid_os = ["Windows", "Linux", "Macos"]
+        if str(self.settings.os) not in valid_os:
+            raise ConanInvalidConfiguration(f"{self.name} {self.version} is only supported for the following operating systems: {valid_os}")
+        valid_arch = ["x86_64"]
+        if str(self.settings.arch) not in valid_arch:
+            raise ConanInvalidConfiguration(f"{self.name} {self.version} is only supported for the following architectures on {self.settings.os}: {valid_arch}")
         if int(str(self.options.platformVersion)) < self.min_api_level or int(str(self.options.platformVersion)) > self.max_api_level:
-            raise ConanException("Unsupported Android platform version: " + str(self.options.platformVersion) + " (supported [%i ... %i])" % (self.min_api_level, self.max_api_level))
+            raise ConanInvalidConfiguration("Unsupported Android platform version: " + str(self.options.platformVersion) + " (supported [%i ... %i])" % (self.min_api_level, self.max_api_level))
 
     def build(self):
         key = self.settings.os

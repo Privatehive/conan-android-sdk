@@ -4,9 +4,9 @@
   "projectDescription": "Android commandline tools to obtain the Android SDK. It includes the complete set of development and debugging tools for Android",
   "vendor": "Björn Stresing",
   "contact": "bjoern.stresing@gmx.de",
-  "domain": "com.github.tereius",
+  "domain": "de.privatehive",
   "copyrightYear": "2023",
-  "repository": "https://github.com/Tereius/conan-android-sdk",
+  "repository": "https://github.com/Privatehive/conan-android-sdk",
   "topics": ["Android", "SDK"],
   "homepage": "https://developer.android.com/studio",
   "license": "Android Software Development Kit License"
