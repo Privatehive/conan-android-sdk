@@ -8,8 +8,8 @@
 
 | os        | arch     | CI Status                                                                                                                                                                                                                                                                 |
 | --------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `Linux`   | `x86_64` | [![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/Privatehive/conan-android-sdk/main.yml?branch=master&style=flat&logo=github&label=Docker+build)](https://github.com/Privatehive/conan-android-sdk/actions?query=branch%3Amaster) |
-| `Windows` | `x86_64` | [![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/Privatehive/conan-android-sdk/main.yml?branch=master&style=flat&logo=github&label=Docker+build)](https://github.com/Privatehive/conan-android-sdk/actions?query=branch%3Amaster) |
+| `Linux`   | `x86_64` | [![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/Privatehive/conan-android-sdk/main.yml?branch=master&style=flat&logo=github&label=create+package)](https://github.com/Privatehive/conan-android-sdk/actions?query=branch%3Amaster) |
+| `Windows` | `x86_64` | [![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/Privatehive/conan-android-sdk/main.yml?branch=master&style=flat&logo=github&label=create+package)](https://github.com/Privatehive/conan-android-sdk/actions?query=branch%3Amaster) |
 
 ### Usage
 
