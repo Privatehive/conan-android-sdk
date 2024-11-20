@@ -13,7 +13,7 @@ required_conan_version = ">=2.0"
 class AndroidSDKConan(ConanFile):
 
     min_api_level = 7
-    max_api_level = 33
+    max_api_level = 35
 
     jsonInfo = json.load(open("info.json", 'r'))
     # ---Package reference---
@@ -36,8 +36,8 @@ class AndroidSDKConan(ConanFile):
     exports_sources = []
     # ---Binary model---
     settings = "os", "arch"
-    options = {"ndkVersion": ["ANY"], "buildToolsRevision": ["ANY"], "platformVersion": list(range(min_api_level, max_api_level + 1))}
-    default_options = {"ndkVersion": "25.1.8937393", "buildToolsRevision": "33.0.2", "platformVersion": 33}
+    options = {"buildToolsRevision": ["ANY"], "platformVersion": list(range(min_api_level, max_api_level + 1))}
+    default_options = {"buildToolsRevision": "33.0.2", "platformVersion": 34}
     # ---Build---
     generators = []
     # ---Folders---
@@ -73,15 +73,12 @@ class AndroidSDKConan(ConanFile):
         check_call('%s --sdk_root=%s --install "platforms;android-%s"' % (sdkmanager_bin, self.source_folder, str(self.options.platformVersion)), env=buildEnv, stdout=DEVNULL, stderr=STDOUT, shell=True)
         check_call('%s --sdk_root=%s --install "build-tools;%s"' % (sdkmanager_bin, self.source_folder, str(self.options.buildToolsRevision)), env=buildEnv, stdout=DEVNULL, stderr=STDOUT, shell=True)
         check_call('%s --sdk_root=%s --install "platform-tools"' % (sdkmanager_bin, self.source_folder), env=buildEnv, stdout=DEVNULL, stderr=STDOUT, shell=True)
-        check_call('%s --sdk_root=%s --install "ndk;%s"' % (sdkmanager_bin, self.source_folder, self.options.ndkVersion), env=buildEnv, stdout=DEVNULL, stderr=STDOUT, shell=True)
 
     def package(self):
         copy(self, pattern="*", src=os.path.join(self.source_folder, "build-tools"), dst=os.path.join(self.package_folder, "build-tools"))
         copy(self, pattern="*", src=os.path.join(self.source_folder, "licenses"), dst=os.path.join(self.package_folder, "licenses"))
         copy(self, pattern="*", src=os.path.join(self.source_folder, "platforms"), dst=os.path.join(self.package_folder, "platforms"))
         copy(self, pattern="*", src=os.path.join(self.source_folder, "platform-tools"), dst=os.path.join(self.package_folder, "platform-tools"))
-        copy(self, pattern="*", src=os.path.join(self.source_folder, "platforms"), dst=os.path.join(self.package_folder, "platforms"))
-        copy(self, pattern="*", src=os.path.join(self.source_folder, "ndk"), dst=os.path.join(self.package_folder, "ndk"))
         with open(os.path.join(self.package_folder, self.toolchain_path), "w") as f:
             f.write("set(ANDROID_SDK_ROOT \"%s\" CACHE PATH \"Set ANDROID_SDK_ROOT\")" % self.package_folder)
 
