@@ -30,14 +30,14 @@ class AndroidSDKConan(ConanFile):
     url = jsonInfo["repository"]
     # ---Requirements---
     requires = []
-    tool_requires = ["openjdk/19.0.2@%s/%s" % (user, channel)]
+    tool_requires = ["openjdk/[>=19.0.2]@%s/%s" % (user, channel)]
     # ---Sources---
     exports = ["info.json"]
     exports_sources = []
     # ---Binary model---
     settings = "os", "arch"
     options = {"buildToolsRevision": ["ANY"], "platformVersion": list(range(min_api_level, max_api_level + 1))}
-    default_options = {"buildToolsRevision": "33.0.2", "platformVersion": 34}
+    default_options = {"buildToolsRevision": "34.0.0", "platformVersion": 34}
     # ---Build---
     generators = []
     # ---Folders---
