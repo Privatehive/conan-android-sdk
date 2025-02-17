@@ -66,13 +66,14 @@ class AndroidSDKConan(ConanFile):
         env = VirtualBuildEnv(self)
         buildEnv = env.vars()
 
-        # Accept all the licenses
-        p = Popen([sdkmanager_bin, '--sdk_root=%s' % self.source_folder, '--licenses'], env=buildEnv, universal_newlines=True, shell=True if self.settings.os == 'Windows' else False, stdout=PIPE, stdin=PIPE, stderr=STDOUT)
-        p.communicate(input='y\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\n')
+        with buildEnv.apply():
+            # Accept all the licenses
+            p = Popen([sdkmanager_bin, '--sdk_root=%s' % self.source_folder, '--licenses'], universal_newlines=True, shell=True if self.settings.os == 'Windows' else False, stdout=PIPE, stdin=PIPE, stderr=STDOUT)
+            p.communicate(input='y\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\n')
 
-        check_call('%s --sdk_root=%s --install "platforms;android-%s"' % (sdkmanager_bin, self.source_folder, str(self.options.platformVersion)), env=buildEnv, stdout=DEVNULL, stderr=STDOUT, shell=True)
-        check_call('%s --sdk_root=%s --install "build-tools;%s"' % (sdkmanager_bin, self.source_folder, str(self.options.buildToolsRevision)), env=buildEnv, stdout=DEVNULL, stderr=STDOUT, shell=True)
-        check_call('%s --sdk_root=%s --install "platform-tools"' % (sdkmanager_bin, self.source_folder), env=buildEnv, stdout=DEVNULL, stderr=STDOUT, shell=True)
+            check_call('%s --sdk_root=%s --install "platforms;android-%s"' % (sdkmanager_bin, self.source_folder, str(self.options.platformVersion)), stdout=DEVNULL, stderr=STDOUT, shell=True)
+            check_call('%s --sdk_root=%s --install "build-tools;%s"' % (sdkmanager_bin, self.source_folder, str(self.options.buildToolsRevision)), stdout=DEVNULL, stderr=STDOUT, shell=True)
+            check_call('%s --sdk_root=%s --install "platform-tools"' % (sdkmanager_bin, self.source_folder), stdout=DEVNULL, stderr=STDOUT, shell=True)
 
     def package(self):
         copy(self, pattern="*", src=os.path.join(self.source_folder, "build-tools"), dst=os.path.join(self.package_folder, "build-tools"))
