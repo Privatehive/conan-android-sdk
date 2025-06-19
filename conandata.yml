@@ -10,5 +10,5 @@ sources:
       keep_permissions: True
     Macos:
       url: "https://dl.google.com/android/repository/commandlinetools-mac-9477386_latest.zip"
-      sha256: "2072ffce4f54cc0e6d2074d2f381e7e579b7d63e915c220b96a7db95b2900ee"
+      sha256: "2072ffce4f54cdc0e6d2074d2f381e7e579b7d63e915c220b96a7db95b2900ee"
       keep_permissions: True
