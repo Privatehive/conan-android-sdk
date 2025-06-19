@@ -17,10 +17,18 @@ jobs:
       conan_host_profile: "windowsMinGW"
       conan_remotes: https://conan.privatehive.de/artifactory/api/conan/public-conan
 
+  build_macos_armv8:
+    name: "Macos"
+    uses: Privatehive/conan-workflows/.github/workflows/createPackage.yml@master
+    with:
+      name: "armv8"
+      image: "macos-15"
+      conan_remotes: https://conan.privatehive.de/artifactory/api/conan/public-conan
+
   upload_recipe:
     name: "Finalize"
     uses: Privatehive/conan-workflows/.github/workflows/uploadRecipe.yml@master
-    needs: [ build_linux_x86_64, build_windows_x86_64 ]
+    needs: [ build_linux_x86_64, build_windows_x86_64, build_macos_armv8 ]
     if: ${{ success() }}
     secrets: inherit
     with:

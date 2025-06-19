@@ -10,6 +10,7 @@
 | --------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `Linux`   | `x86_64` | [![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/Privatehive/conan-android-sdk/main.yml?branch=master&style=flat&logo=github&label=create+package)](https://github.com/Privatehive/conan-android-sdk/actions?query=branch%3Amaster) |
 | `Windows` | `x86_64` | [![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/Privatehive/conan-android-sdk/main.yml?branch=master&style=flat&logo=github&label=create+package)](https://github.com/Privatehive/conan-android-sdk/actions?query=branch%3Amaster) |
+| `Macos`   | `armv8`  | [![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/Privatehive/conan-android-sdk/main.yml?branch=master&style=flat&logo=github&label=create+package)](https://github.com/Privatehive/conan-android-sdk/actions?query=branch%3Amaster) |
 
 ### Usage
 
@@ -19,9 +20,7 @@ The following packages will be installed:
 - build-tools;${buildToolsRevision}
 - platform-tools
 
-<s>The NDK is also installed because the Gradle task "stripDebugDebugSymbols" searches for the NDK with the Version (specified in gradle.properties `androidNdkVersion`) in the SDK dir.</s>
-
 | option             | values | default  |
 | ------------------ | ------ | -------- |
 | buildToolsRevision | "ANY"  | "34.0.0" |
-| platformVersion    | 7..    | 34       |
+| platformVersion    | "ANY"  | 34       |
